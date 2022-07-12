@@ -1,0 +1,7 @@
+server:
+  port: ${PORT}
+spring:
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/counter
+    username: counter
+    password: counter-pass
