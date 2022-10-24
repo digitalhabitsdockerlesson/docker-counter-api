@@ -33,6 +33,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            docker stop ${echo ${{ secrets.DOCKER_NAME }}
-            docker rm ${echo ${{ secrets.DOCKER_NAME }}
-            docker run --name=${{ secrets.DOCKER_NAME }} --add-host=host.docker.internal:host-gateway -e "SPRING_PROFILES_ACTIVE=docker" -p 8080:8080 -d $LOGIN/$NAME:${{ github.sha }}
+            docker stop $(echo ${{ secrets.DOCKER_NAME }})
+            docker rm $(echo ${{ secrets.DOCKER_NAME }})
+            echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+            docker run --name=${{ secrets.DOCKER_NAME }} -p 8080:8080 --add-host=host.docker.internal:host-gateway -e "SPRING_PROFILES_ACTIVE=docker" -d ${{secrets.DOCKER_LOGIN}}/${{secrets.DOCKER_NAME}}:${{ github.sha }}

@@ -32,6 +32,6 @@ public class CounterController {
 
     @GetMapping("/test")
     public ResponseEntity<String> getHelloWorld() {
-        return ResponseEntity.ok("Hello, World!");
+        return ResponseEntity.ok("Hello, digital habits!");
     }
 }
