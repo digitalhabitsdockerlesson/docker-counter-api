@@ -29,4 +29,9 @@ public class CounterController {
     public ResponseEntity<Response> decrementCounter() {
         return ResponseEntity.ok(service.decrementCounter());
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> getHelloWorld() {
+        return ResponseEntity.ok("Hello, World!");
+    }
 }
