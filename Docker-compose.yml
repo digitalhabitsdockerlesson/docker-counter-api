@@ -25,7 +25,7 @@ services:
 
   web:
     image: discoverssv/docker-counter-web-nginx:latest
-    container: counter-nginx
+    container_name: counter-nginx
     ports:
       - "3080:80"
     depends_on:
