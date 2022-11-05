@@ -18,6 +18,13 @@ services:
   api:
     image: discoverssv/docker-counter-api:latest
     container_name: counter-api
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=host.docker.internal
+      - DB_HOST=5432
+      - DB_NAME=counter
+      - DB_LOGIN=counter
+      - DB_PWD=counter-pass
     depends_on:
       - db
     networks:
