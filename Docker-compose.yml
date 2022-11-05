@@ -1,0 +1,47 @@
+version: "3"
+
+networks:
+  counter-net:
+
+services:
+  db:
+    build: docker-pg
+    container_name: counter-db
+    restart: on-failure
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgresql:/var/lib/postgresql/data/
+    networks:
+      - counter-net
+
+  api:
+    image: discoverssv/docker-counter-api:latest
+    container_name: counter-api
+    depends_on:
+      - db
+    networks:
+      - counter-net
+
+  web:
+    image: discoverssv/docker-counter-web-nginx:latest
+    container: counter-nginx
+    ports:
+      - "3080:80"
+    depends_on:
+      - api
+    networks:
+      - counter-net
+
+  react:
+    image: discoverssv/docker-counter-web-node:latest
+    container_name: counter-node
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - counter-net
+
+volumes:
+  postgresql:

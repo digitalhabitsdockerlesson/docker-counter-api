@@ -2,16 +2,19 @@ name: Java CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+
     env:
       LOGIN: ${{ secrets.DOCKER_LOGIN }}
-      NAME: ${{ secrets.DOCKER_NAME }}
+      IMAGE: docker-counter-api
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Setup JDK 11
         uses: actions/setup-java@v1
         with:
@@ -23,17 +26,6 @@ jobs:
       - name: Login to docker.io
         run: echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
       - name: Build image
-        run: docker build -t $LOGIN/$NAME:${{ github.sha }} -f Dockerfile .
+        run: docker build -t $LOGIN/$IMAGE:latest -f Dockerfile .
       - name: Push image
-        run: docker push $LOGIN/$NAME:${{ github.sha }}
-      - name: Push to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            docker stop $(echo ${{ secrets.DOCKER_NAME }})
-            docker rm $(echo ${{ secrets.DOCKER_NAME }})
-            echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-            docker run --name=${{ secrets.DOCKER_NAME }} -p 8080:8080 --add-host=host.docker.internal:host-gateway -e "SPRING_PROFILES_ACTIVE=docker" -d ${{secrets.DOCKER_LOGIN}}/${{secrets.DOCKER_NAME}}:${{ github.sha }}
+        run: docker push $LOGIN/$IMAGE:latest
