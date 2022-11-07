@@ -6,6 +6,7 @@ networks:
 services:
   db:
     build: docker-pg
+    hostname: counter-db
     container_name: counter-db
     restart: on-failure
     ports:
@@ -17,11 +18,16 @@ services:
 
   api:
     image: discoverssv/docker-counter-api:latest
+    hostname: counter-api
     container_name: counter-api
+    ports:
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - DB_HOST=host.docker.internal
-      - DB_HOST=5432
+#      - DB_HOST=host.docker.internal
+#      - DB_PORT=5433
+      - DB_HOST=counter-db
+      - DB_PORT=5432
       - DB_NAME=counter
       - DB_LOGIN=counter
       - DB_PWD=counter-pass

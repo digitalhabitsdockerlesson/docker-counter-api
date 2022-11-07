@@ -11,3 +11,5 @@ create table COUNTER (
 );
 
 insert into COUNTER(value) values (0);
+
+GRANT ALL ON TABLE counter TO counter;
