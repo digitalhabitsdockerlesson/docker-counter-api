@@ -30,8 +30,4 @@ public class CounterController {
         return ResponseEntity.ok(service.decrementCounter());
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> getHelloWorld() {
-        return ResponseEntity.ok("Hello, digital habits!");
-    }
 }
